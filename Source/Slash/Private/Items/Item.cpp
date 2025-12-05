@@ -25,14 +25,13 @@ void AItem::BeginPlay()
 	
 	if (World)
 	{
-		
-		DrawDebugLine(World, Location, Location + Forward * 200.f, FColor::Orange, true); 
-
+		DrawDebugPoint(World, Location, 10.f, FColor::Blue, true);		
 	}
 	
-	// use macro to draw
+	// use macro to draw 
 	DRAW_SPHERE(Location);
 	DRAW_LINE(Location, Location + Forward * 100.f);
+	DRAW_POINT(Location + Forward * 100.f);
 }
 
 // Called every frame
