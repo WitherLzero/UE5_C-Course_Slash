@@ -2,9 +2,7 @@
 
 
 #include "Items/Item.h"
-#include "DrawDebugHelpers.h" // Header files include draw debug functions
-#include "Slash/Slash.h"
-
+#include "Slash/DebugMacro.h"
 
 // Sets default values
 AItem::AItem()
