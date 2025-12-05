@@ -2,6 +2,9 @@
 
 
 #include "Items/Item.h"
+#include "DrawDebugHelpers.h" // Header files include draw debug functions
+#include "Slash/Slash.h"
+
 
 // Sets default values
 AItem::AItem()
@@ -21,6 +24,17 @@ void AItem::BeginPlay()
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(1,60.f,FColor::Cyan,TEXT("Item OnScreen Message!"));
+	}
+	
+	UWorld* World = GetWorld(); // Get the world pointer that this actor is in
+
+	if (World)
+	{
+		FVector Location = GetActorLocation();
+		DrawDebugSphere(World,Location,30.f,24,FColor::Orange,false,30.f);
+		
+		// use macro to draw sphere
+		DRAW_SPHERE(Location);
 	}
 
 }
