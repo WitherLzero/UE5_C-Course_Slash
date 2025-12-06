@@ -37,6 +37,9 @@ protected:
 	T Avg(T First, T Second);
 	
 private:
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* ItemMesh;
+	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,meta = (AllowPrivateAccess = "true")) 
 	float RunningTime;
 };
