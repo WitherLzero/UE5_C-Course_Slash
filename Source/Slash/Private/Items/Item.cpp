@@ -13,6 +13,16 @@ AItem::AItem()
 
 }
 
+float AItem::TransformedSine() const
+{
+	return Amplitude * FMath::Sin(RunningTime * TimeConstant);
+}
+
+float AItem::TransformedCosine() const
+{
+	return Amplitude * FMath::Cos(RunningTime * TimeConstant);
+}
+
 // Called when the game starts or when spawned
 void AItem::BeginPlay() 
 {
@@ -32,9 +42,9 @@ void AItem::Tick(float DeltaTime)
 
 	RunningTime += DeltaTime;
 	float RotationSpeed = 45.f;
-	float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);
+	// float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);
 	
-	AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
+	// AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
 	AddActorLocalRotation(FRotator(RotationSpeed*DeltaTime,0.f,0.f));
 	
 	DRAW_SPHERE_PerFrame(GetActorLocation());
