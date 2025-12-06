@@ -22,6 +22,9 @@ protected:
 	virtual void BeginPlay() override;
 	
 private:
+	// UPROPERTY(VisibleDefaultsOnly): can only see variables in blueprints
+	// UPROPERTY(VisibleInstanceOnly): can only see variables on instances
+	UPROPERTY(VisibleAnywhere) // can only see variables both in blueprints and on instances
 	float RunningTime;
 	
 	// UPROPERTY(EditDefaultsOnly)： can see and edit variables in blueprints
