@@ -6,7 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "Bird.generated.h"
 
-class UcapsuleComponent;
+class UCapsuleComponent;
+class USkeletalMeshComponent;
 
 UCLASS()
 class SLASH_API ABird : public APawn
@@ -25,5 +26,8 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	UCapsuleComponent* Capsule;
+	
+	UPROPERTY(VisibleAnywhere)
+	USkeletalMeshComponent* BirdMesh;
 	
 };
