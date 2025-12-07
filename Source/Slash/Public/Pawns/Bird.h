@@ -7,8 +7,13 @@
 #include "InputActionValue.h"
 #include "Bird.generated.h"
 
+// Components Forward Declaration
 class UCapsuleComponent;
 class USkeletalMeshComponent;
+class USpringArmComponent;
+class UCameraComponent;
+
+// Input classes Forward Declaration
 class UInputMappingContext;
 class UInputAction;
 
@@ -42,5 +47,11 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* BirdMesh;
+	
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* SpringArm;
+	
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* ViewCamera;
 	
 };
