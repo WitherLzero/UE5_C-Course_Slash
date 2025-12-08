@@ -53,6 +53,16 @@ void ASlashCharacter::Move(const FInputActionValue& Value)
 	}
 }
 
+void ASlashCharacter::Look(const FInputActionValue& Value)
+{
+	const FVector2D LookAxis = Value.Get<FVector2D>();
+	if (GetController())
+	{
+		AddControllerYawInput(LookAxis.X);
+		AddControllerPitchInput(LookAxis.Y);
+	}
+}
+
 // Called every frame
 void ASlashCharacter::Tick(float DeltaTime)
 {
@@ -67,6 +77,7 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&ASlashCharacter::Move);
+		EnhancedInputComponent->BindAction(LookAction,ETriggerEvent::Triggered,this,&ASlashCharacter::Look);
 	}
 }
 
