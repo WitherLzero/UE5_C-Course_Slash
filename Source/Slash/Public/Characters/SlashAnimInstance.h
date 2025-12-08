@@ -26,6 +26,12 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	UCharacterMovementComponent* CharacterMovement;
 	
-	UPROPERTY(BlueprintReadOnly, Category=Movement);
+	UPROPERTY(BlueprintReadOnly, Category=Movement)
+	float Speed;
+	
+	UPROPERTY(BlueprintReadOnly, Category=Movement)
 	float GroundSpeed;
+	
+	UPROPERTY( BlueprintReadOnly, Category=Movement)
+	bool bIsFalling;
 };
