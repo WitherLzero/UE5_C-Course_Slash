@@ -31,14 +31,37 @@ float AItem::TransformedCosine() const
 	return Amplitude * FMath::Cos(RunningTime * TimeConstant);
 }
 
+void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	const FString OverlapActorName = OtherActor->GetName();
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(1,30.f,FColor::Red,
+		FString::Printf(TEXT("Overlap Actor Name: %s"),*OverlapActorName));
+	}
+}
+
+void AItem::OnTestSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	const FString EndOverlapCompName = OtherComp->GetName();
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(2, 30.f, FColor::Red,
+			FString::Printf(TEXT("End Overlap Comp Name: %s"), *EndOverlapCompName));
+	}
+}
+
 // Called when the game starts or when spawned
 void AItem::BeginPlay() 
 {
 	Super::BeginPlay();
 	
-	UWorld* World = GetWorld(); // Get the world pointer that this actor is in
-	
-	SetActorRotation(FRotator(0.f,45.f,0.f));
+	// Bind the callback to the delegate
+	Sphere->SetGenerateOverlapEvents(true);
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnSphereOverlap);
+	Sphere->OnComponentEndOverlap.AddDynamic(this, &AItem::OnTestSphereEndOverlap);
 	
 }
 
