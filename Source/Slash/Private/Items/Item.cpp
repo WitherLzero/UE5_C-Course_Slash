@@ -2,6 +2,8 @@
 
 
 #include "Items/Item.h"
+
+#include "Components/SphereComponent.h"
 #include "Slash/DebugMacro.h"
 
 // Sets default values
@@ -13,6 +15,9 @@ AItem::AItem()
 	
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMeshComponent"));
 	RootComponent = ItemMesh;
+	
+	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
+	Sphere->SetupAttachment(GetRootComponent());
 
 }
 

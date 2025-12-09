@@ -5,6 +5,8 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+class USphereComponent;
+
 UCLASS()
 class SLASH_API AItem : public AActor
 {
@@ -27,6 +29,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Paramaters")
 	float TimeConstant;
 
+	// Math helper Functions
 	UFUNCTION(BlueprintPure)
 	float TransformedSine() const;
 
@@ -39,6 +42,9 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* ItemMesh;
+	
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* Sphere;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,meta = (AllowPrivateAccess = "true")) 
 	float RunningTime;
