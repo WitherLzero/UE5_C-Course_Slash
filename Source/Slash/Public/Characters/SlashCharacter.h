@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "SlashCharacter.generated.h"
 
+class AItem;
 class UCameraComponent;
 class USpringArmComponent;
 class UGroomComponent;
@@ -40,12 +41,17 @@ protected:
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* JumpAction;
 	
+	UPROPERTY(editanywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* InteractAction;
+	
 	// Input Functions
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	virtual void Jump() override;
+	void Interact();
 	
 private:
+	// Components
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;
 	
@@ -57,4 +63,11 @@ private:
 	
 	UPROPERTY(VisibleAnywhere,Category=Groom)	
 	UGroomComponent* Eyebrows;
+	
+	// Interactables
+	UPROPERTY(VisibleInstanceOnly)
+	AItem* OverlappingItem;
+	
+public:
+	FORCEINLINE void SetOverlappingItem(AItem* NewItem) { OverlappingItem = NewItem; }
 };

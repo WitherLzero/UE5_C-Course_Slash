@@ -6,6 +6,7 @@
 #include "Items/Item.h"
 #include "Weapon.generated.h"
 
+
 UCLASS()
 class SLASH_API AWeapon : public AItem
 {
@@ -20,6 +21,9 @@ protected:
 	// Derived callbacks
 	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+
+	// Interact
+	virtual void Interact(ASlashCharacter* Caller) override;
 public:
 	virtual void Tick(float DeltaTime) override;
 };

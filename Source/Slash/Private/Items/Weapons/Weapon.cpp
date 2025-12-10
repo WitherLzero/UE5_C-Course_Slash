@@ -3,6 +3,8 @@
 
 #include "Items/Weapons/Weapon.h"
 
+#include "Characters/SlashCharacter.h"
+
 
 // Sets default values
 AWeapon::AWeapon()
@@ -27,6 +29,12 @@ void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	Super::OnSphereEndOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+}
+
+void AWeapon::Interact(ASlashCharacter* Caller)
+{
+	FAttachmentTransformRules Rules(EAttachmentRule::SnapToTarget,true);
+	ItemMesh->AttachToComponent(Caller->GetMesh(),Rules,FName("RightHandSocket"));
 }
 
 void AWeapon::Tick(float DeltaTime)

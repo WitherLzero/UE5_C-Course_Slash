@@ -3,6 +3,7 @@
 
 #include "Items/Item.h"
 
+#include "Characters/SlashCharacter.h"
 #include "Components/SphereComponent.h"
 #include "Slash/DebugMacro.h"
 
@@ -34,6 +35,10 @@ float AItem::TransformedCosine() const
 void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (ASlashCharacter* OverlappingCharacter = Cast<ASlashCharacter>(OtherActor))
+	{
+		OverlappingCharacter->SetOverlappingItem(this);
+	}
 	if (GEngine)
 	{
 		const FString ThisActorName = GetName();
@@ -45,6 +50,10 @@ void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	if (ASlashCharacter* OverlappingCharacter = Cast<ASlashCharacter>(OtherActor))
+	{
+		OverlappingCharacter->SetOverlappingItem(nullptr);
+	}	
 	if (GEngine)
 	{
 		const FString ThisActorName = GetName();

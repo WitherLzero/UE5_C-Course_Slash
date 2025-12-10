@@ -3,12 +3,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interfaces/Interactable.h"
 #include "Item.generated.h"
 
 class USphereComponent;
 
 UCLASS()
-class SLASH_API AItem : public AActor
+class SLASH_API AItem : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 	
@@ -22,6 +23,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Component variables
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* ItemMesh;
+	
 	// BlueprintReadOnly: can only get variables in event graph
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Paramaters") 
 	float Amplitude;
@@ -45,11 +50,10 @@ protected:
 	
 	UFUNCTION()  
 	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-	
+
+	// Empty Interact
+	virtual void Interact(ASlashCharacter* Caller) override {}
 private:
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* ItemMesh;
-	
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* Sphere;
 	
