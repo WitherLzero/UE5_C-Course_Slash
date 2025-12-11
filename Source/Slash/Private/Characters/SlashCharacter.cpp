@@ -14,6 +14,8 @@
 #include "Items/Item.h"
 #include "Interfaces/Interactable.h"
 
+#include "Animation/AnimMontage.h"
+
 // Sets default values
 ASlashCharacter::ASlashCharacter()
 {
@@ -100,6 +102,78 @@ void ASlashCharacter::Interact()
 	}
 }
 
+void ASlashCharacter::Attack()
+{
+	// Ensure character has weapon equipped
+	if (CharacterState == ECharacterState::ECS_Unequipped) return;
+
+	// Case 1: If idle, start the first attack
+	if (ActionState == EActionState::EAS_Unoccupied)
+	{
+		PlayAttackMontage();
+		ActionState = EActionState::EAS_Attacking;
+	}
+	// Case 2: If already attacking and within valid combo window (Instant Transition)
+	else if (ActionState == EActionState::EAS_Attacking && bCanCombo)
+	{
+		bCanCombo = false; // Close window immediately to prevent double trigger
+		AttackIndex++;
+		
+		// Reset combo loop if exceeding max sections
+		if (AttackIndex > 2)
+		{
+			AttackIndex = 0;
+		}
+		PlayAttackMontage();
+	}
+}
+
+void ASlashCharacter::PlayAttackMontage()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && AttackMontage)
+	{
+		AnimInstance->Montage_Play(AttackMontage);
+		FName SectionName = FName();
+
+		// Map current index to specific Montage Section Name
+		switch (AttackIndex)
+		{
+		case 0:
+			SectionName = FName("Attack1");
+			break;
+		case 1:
+			SectionName = FName("Attack2");
+			break;
+		case 2:
+			SectionName = FName("Attack3");
+			break;
+		default:
+			break;
+		}
+
+		// Immediately jump to the start of the next attack animation
+		AnimInstance->Montage_JumpToSection(SectionName);
+	}
+}
+
+void ASlashCharacter::AttackEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+	bCanCombo = false; // ensure window is closed
+	AttackIndex = 0;   // reset index
+}
+
+void ASlashCharacter::EnableCombo()
+{
+	bCanCombo = true;
+}
+
+void ASlashCharacter::DisableCombo()
+{
+	bCanCombo = false;
+}
+
 // Called every frame
 void ASlashCharacter::Tick(float DeltaTime)
 {
@@ -117,6 +191,7 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction(LookAction,ETriggerEvent::Triggered,this,&ASlashCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction,ETriggerEvent::Triggered,this,&ASlashCharacter::Jump);
 		EnhancedInputComponent->BindAction(InteractAction,ETriggerEvent::Triggered,this,&ASlashCharacter::Interact);
+		EnhancedInputComponent->BindAction(AttackAction,ETriggerEvent::Triggered,this,&ASlashCharacter::Attack);
 	}
 }
 

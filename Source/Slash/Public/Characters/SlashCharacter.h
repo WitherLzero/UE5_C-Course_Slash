@@ -16,6 +16,8 @@ class UGroomComponent;
 class UInputMappingContext;
 class UInputAction;
 
+class UAnimMontage;
+
 UCLASS()
 class SLASH_API ASlashCharacter : public ACharacter
 {
@@ -42,19 +44,41 @@ protected:
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* JumpAction;
 	
-	UPROPERTY(editanywhere, BlueprintReadWrite, Category = "Input")
+	UPROPERTY(Editanywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* InteractAction;
 	
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UInputAction* AttackAction;
+
 	// Input Functions
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	virtual void Jump() override;
 	void Interact();
+	void Attack();
+
+	/* Play Montage Functions */
+	void PlayAttackMontage();
+
+	UFUNCTION(BlueprintCallable)
+	void AttackEnd();
+
+	UFUNCTION(BlueprintCallable)
+	void EnableCombo();
+
+	UFUNCTION(BlueprintCallable)
+	void DisableCombo();
 	
 private:
 	// Character States
 	UPROPERTY(VisibleInstanceOnly)
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+
+	UPROPERTY(VisibleInstanceOnly)
+	EActionState ActionState = EActionState::EAS_Unoccupied;
+	
+	int32 AttackIndex = 0;
+	bool bCanCombo = false;
 	
 	// Components
 	UPROPERTY(VisibleAnywhere)
@@ -73,6 +97,9 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 	
+	// Animation montages
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* AttackMontage;
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* NewItem) { OverlappingItem = NewItem; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
