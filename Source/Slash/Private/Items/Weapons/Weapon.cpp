@@ -33,8 +33,9 @@ void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 void AWeapon::Interact(ASlashCharacter* Caller)
 {
-	FAttachmentTransformRules Rules(EAttachmentRule::SnapToTarget,true);
+	const FAttachmentTransformRules Rules(EAttachmentRule::SnapToTarget,true);
 	ItemMesh->AttachToComponent(Caller->GetMesh(),Rules,FName("RightHandSocket"));
+	Caller->SetCharacterState(ECharacterState::ECS_Equipped);
 }
 
 void AWeapon::Tick(float DeltaTime)
